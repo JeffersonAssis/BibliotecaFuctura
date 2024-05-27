@@ -76,12 +76,12 @@ public class LivroController {
   }
   
   @GetMapping("/buscar")
-  public ResponseEntity<List<Livro>> obterTodosLivros(@RequestParam(value = "categoria", required = false)String categoria, @RequestParam(value ="nome", required = false)String nome){
+  public ResponseEntity<List<Livro>> obterTodosLivros(@RequestParam(value = "categoria", required = false)String categoria, @RequestParam(value ="nomeautor", required = false)String nomeAutor){
     List<Livro> livros = null;
     if(categoria != null && !categoria.isEmpty()){
       livros = livroService.listaLivrosPorCategoria(categoria);
-    }if(nome != null && !nome.isEmpty()){
-      livros = livroService.listaLivrosPorAutor(nome);     
+    }if(nomeAutor != null && !nomeAutor.isEmpty()){
+      livros = livroService.listaLivrosPorAutor(nomeAutor);     
     }
     if(Objects.nonNull(livros))  
      return ResponseEntity.status(HttpStatus.OK).body(livros);

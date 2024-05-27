@@ -64,8 +64,8 @@ public class LivroService {
     return new ArrayList<>();
   }
   
-  public List<Livro> listaLivrosPorAutor(String nome) {
-    Optional<List<Livro>> optListLivro = livroRepository.findByAutor(nome);
+  public List<Livro> listaLivrosPorAutor(String nomeAutor) {
+    Optional<List<Livro>> optListLivro = livroRepository.findByAutor(nomeAutor);
     if(optListLivro.isPresent()){
       return optListLivro.get();
     }
