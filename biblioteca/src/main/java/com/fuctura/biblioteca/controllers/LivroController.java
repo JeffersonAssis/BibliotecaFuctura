@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fuctura.biblioteca.models.Livro;
+import com.fuctura.biblioteca.Dtos.LivroDto;
 import com.fuctura.biblioteca.service.LivroService;
 
 @RestController
-@RequestMapping("livros")
+@RequestMapping("/livros")
 public class LivroController {
-  
+ 
   private final LivroService livroService;
 
   @Autowired
@@ -30,7 +30,7 @@ public class LivroController {
   }
 
   @PostMapping("salva")
-  public ResponseEntity<?> salvaCategoria(@RequestBody Livro livro){
+  public ResponseEntity<?> salvaCategoria(@RequestBody LivroDto livro){
     try {
       return ResponseEntity.status(HttpStatus.CREATED).body(livroService.salvaLivro(livro));
 
@@ -40,8 +40,8 @@ public class LivroController {
   }
 
   @GetMapping("/")
-  public ResponseEntity<List<Livro>> obterTodosLivros(){
-    List<Livro> livros = livroService.obterTodasLivros();
+  public ResponseEntity<List<LivroDto>> obterTodosLivros(){
+    List<LivroDto> livros = livroService.obterTodasLivros();
     if(Objects.nonNull(livros))
       return ResponseEntity.status(HttpStatus.OK).body(livros);
     
@@ -49,8 +49,8 @@ public class LivroController {
   }
 
   @GetMapping("/nome")
-  public ResponseEntity<Livro> obterLivro(@RequestParam(value ="nome", required = false) String nome){
-    Livro livro = livroService.obterLivro(nome);
+  public ResponseEntity<LivroDto> obterLivro(@RequestParam(value ="nome", required = false) String nome){
+    LivroDto livro = livroService.obterLivro(nome);
     if(Objects.nonNull(livro))
       return ResponseEntity.status(HttpStatus.OK).body(livro);
     
@@ -67,8 +67,8 @@ public class LivroController {
   }
 
   @PutMapping("/atulizar")
-  public ResponseEntity<?> updateCategoria(@RequestBody Livro livro, @RequestParam("nome")String nome){
-    Livro li = livroService.updateLivro(livro, nome);
+  public ResponseEntity<?> updateCategoria(@RequestBody LivroDto livro, @RequestParam("nome")String nome){
+    LivroDto li = livroService.updateLivro(livro, nome);
     if(Objects.nonNull(li)){
       return ResponseEntity.status(HttpStatus.OK).body(li);
     }
@@ -76,8 +76,8 @@ public class LivroController {
   }
   
   @GetMapping("/buscar")
-  public ResponseEntity<List<Livro>> obterTodosLivros(@RequestParam(value = "categoria", required = false)String categoria, @RequestParam(value ="nomeautor", required = false)String nomeAutor){
-    List<Livro> livros = null;
+  public ResponseEntity<List<LivroDto>> obterTodosLivros(@RequestParam(value = "categoria", required = false)String categoria, @RequestParam(value ="nomeautor", required = false)String nomeAutor){
+    List<LivroDto> livros = null;
     if(categoria != null && !categoria.isEmpty()){
       livros = livroService.listaLivrosPorCategoria(categoria);
     }if(nomeAutor != null && !nomeAutor.isEmpty()){

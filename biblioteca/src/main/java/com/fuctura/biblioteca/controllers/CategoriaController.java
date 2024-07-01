@@ -14,22 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Objects;
 
-import com.fuctura.biblioteca.models.Categoria;
+import com.fuctura.biblioteca.Dtos.CategoriaDto;
 import com.fuctura.biblioteca.service.CategoriaService;
 
+
 @RestController
-@RequestMapping("categoria")
+@RequestMapping("/categoria")
 public class CategoriaController {
-  
-  private final CategoriaService categoriaService;
+
+  private CategoriaService categoriaService;
+
 
   @Autowired
   public CategoriaController( CategoriaService categoriaService){
     this.categoriaService = categoriaService;
+
   }
 
   @PostMapping("salva")
-  public ResponseEntity<?> salvaCategoria(@RequestBody Categoria categoria){
+  public ResponseEntity<?> salvaCategoria(@RequestBody CategoriaDto categoria){
     try {
       return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.salvaCategoria(categoria));
 
@@ -38,9 +41,10 @@ public class CategoriaController {
     }
   }
 
+
   @GetMapping("/")
-  public ResponseEntity<List<Categoria>> obterTodasCategorias(){
-    List<Categoria> lCategorias = categoriaService.obterTodasCategorias();
+  public ResponseEntity<List<CategoriaDto>> obterTodasCategorias(){
+    List<CategoriaDto> lCategorias = categoriaService.obterTodasCategorias();
     if(Objects.nonNull(lCategorias))
       return ResponseEntity.status(HttpStatus.OK).body(lCategorias);
     
@@ -48,8 +52,8 @@ public class CategoriaController {
   }
 
   @GetMapping("/nome")
-  public ResponseEntity<Categoria> obterTodasCategorias(@RequestParam(value ="nome", required = false) String nome){
-    Categoria categoria = categoriaService.obterCategoria(nome);
+  public ResponseEntity<CategoriaDto> obterTodasCategorias(@RequestParam(value ="nome", required = false) String nome){
+    CategoriaDto categoria = categoriaService.obterCategoria(nome);
     if(Objects.nonNull(categoria))
       return ResponseEntity.status(HttpStatus.OK).body(categoria);
     
@@ -66,8 +70,8 @@ public class CategoriaController {
   }
 
   @PutMapping("/atulizar")
-  public ResponseEntity<?> updateCategoria(@RequestBody Categoria categoria, @RequestParam("nome")String nome){
-    Categoria cat = categoriaService.updateCategoria(categoria, nome);
+  public ResponseEntity<?> updateCategoria(@RequestBody CategoriaDto categoria, @RequestParam("nome")String nome){
+    CategoriaDto cat = categoriaService.updateCategoria(categoria, nome);
     if(Objects.nonNull(cat)){
       return ResponseEntity.status(HttpStatus.OK).body(cat);
     }

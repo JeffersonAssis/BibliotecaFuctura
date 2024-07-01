@@ -1,23 +1,11 @@
-package com.fuctura.biblioteca.models;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+package com.fuctura.biblioteca.Dtos;
 
 
-@Entity
-@Table(name = "tb_livro")
-public class Livro {
+public class LivroDto {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+
   private Long id;
 
- @Column(nullable = false)
   private String nome;
   
   private String autor;
@@ -26,10 +14,10 @@ public class Livro {
 
   private int tamanho;
   
-  @ManyToOne
-  private Categoria categoria;
 
-  public Livro(Long id, String nome, String autor, String texto, int tamanho, Categoria categoria) {
+  private CategoriaDto categoria;
+
+  public LivroDto(Long id, String nome, String autor, String texto, int tamanho, CategoriaDto categoria) {
     this.id = id;
     this.nome = nome;
     this.autor = autor;
@@ -38,7 +26,7 @@ public class Livro {
     this.categoria = categoria;
   }
 
-  public Livro(){
+  public LivroDto(){
 
   }
  
@@ -49,7 +37,7 @@ public class Livro {
   public Long getId() {
     return id;
   }
-  public Categoria getCategoria() {
+  public CategoriaDto getCategoria() {
     return categoria;
   }
   public String getNome() {
@@ -61,7 +49,7 @@ public class Livro {
   public void setAutor(String autor) {
     this.autor = autor;
   }
-  public void setCategoria(Categoria categoria) {
+  public void setCategoria(CategoriaDto categoria) {
     this.categoria = categoria;
   }
   public void setId(Long id) {
@@ -74,11 +62,11 @@ public class Livro {
     this.texto = texto;
   }
 
-  public Tamanho getTamanho(){
-    return Tamanho.valeuOf(tamanho);
+  public TamanhoDto getTamanho(){
+    return TamanhoDto.valeuOf(tamanho);
   }
 
-  public void setTamanho(Tamanho tamanho){
+  public void setTamanho(TamanhoDto tamanho){
     if(tamanho != null){
       this.tamanho= tamanho.getCod();
     }

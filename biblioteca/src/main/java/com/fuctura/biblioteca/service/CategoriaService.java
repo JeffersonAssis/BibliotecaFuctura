@@ -3,43 +3,51 @@ package com.fuctura.biblioteca.service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fuctura.biblioteca.Dtos.CategoriaDto;
+import com.fuctura.biblioteca.config.ModelMapperConfig;
 import com.fuctura.biblioteca.models.Categoria;
 import com.fuctura.biblioteca.repository.CategoriaRepository;
 
 @Service
 public class CategoriaService {
 
-  private final CategoriaRepository categoriaRepository;
+  private CategoriaRepository categoriaRepository;
+
+  private ModelMapperConfig modelMapper;
 
   @Autowired
-  public CategoriaService(CategoriaRepository categoriaRepository){
+  public CategoriaService(CategoriaRepository categoriaRepository, ModelMapperConfig modelMapper){
     this.categoriaRepository = categoriaRepository;
+    this.modelMapper = modelMapper;
   }
 
-  public Categoria salvaCategoria(Categoria categoria) {
-    return categoriaRepository.save(categoria);
+  public CategoriaDto salvaCategoria(CategoriaDto categoria) {
+    Categoria c = modelMapper.modelMapper().map(categoria, Categoria.class);
+    return modelMapper.modelMapper().map(categoriaRepository.save(c), CategoriaDto.class);
   }
 
-  public List<Categoria> obterTodasCategorias(){
-    return categoriaRepository.findAll();
+  public List<CategoriaDto> obterTodasCategorias(){
+    return categoriaRepository.findAll().stream().map(c -> modelMapper.modelMapper().map(c, CategoriaDto.class)).collect(Collectors.toList());
   }
 
-  public Categoria obterCategoria(String nome){
+ 
+  public CategoriaDto obterCategoria(String nome){
     Optional<Categoria> optCat = categoriaRepository.findByNome(nome);
     if(optCat.isPresent()){
       Categoria cat = optCat.get();
-      return cat;
+      return modelMapper.modelMapper().map(cat,CategoriaDto.class);
     }
-    return new Categoria();
+    return new CategoriaDto();
       
   }
 
   public String excluirCategoria(String nome){
-    Categoria cat = obterCategoria(nome);
+    Categoria cat = modelMapper.modelMapper().map(obterCategoria(nome), Categoria.class);
     if(Objects.nonNull(cat)){
       categoriaRepository.delete(cat);
       return "Categoria Excluida com Sucesso";
@@ -47,13 +55,13 @@ public class CategoriaService {
      return null;
   }
 
-  public Categoria updateCategoria(Categoria categoria, String nome) {
-    Categoria cat = obterCategoria(nome);
+  public CategoriaDto updateCategoria(CategoriaDto categoria, String nome) {
+    Categoria cat = modelMapper.modelMapper().map(obterCategoria(nome), Categoria.class);
     if(Objects.nonNull(cat)){
       categoria.setId(cat.getId());
-      categoriaRepository.save(categoria);
+      salvaCategoria(categoria);
       return categoria;
     }
-    return new Categoria();
+    return new CategoriaDto();
   }
 }

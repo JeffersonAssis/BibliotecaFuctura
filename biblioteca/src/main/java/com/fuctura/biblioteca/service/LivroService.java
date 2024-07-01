@@ -4,70 +4,80 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fuctura.biblioteca.Dtos.LivroDto;
+import com.fuctura.biblioteca.config.ModelMapperConfig;
 import com.fuctura.biblioteca.models.Livro;
 import com.fuctura.biblioteca.repository.LivroRepository;
 
 @Service
 public class LivroService {
+ 
+  private LivroRepository livroRepository;
 
-  private final LivroRepository livroRepository;
+  private ModelMapperConfig modelMapper;
 
   @Autowired
-  public LivroService( LivroRepository livroRepository){
+  public LivroService( LivroRepository livroRepository, ModelMapperConfig modelMapper){
     this.livroRepository = livroRepository;
+    this.modelMapper = modelMapper;
   }
 
-  public Object salvaLivro(Livro livro) {
-    return livroRepository.save(livro);
+  public LivroDto salvaLivro(LivroDto livro) {
+   Livro l = modelMapper.modelMapper().map(livro, Livro.class);
+   return modelMapper.modelMapper().map( livroRepository.save(l), LivroDto.class);
+    
   }
 
-  public List<Livro> obterTodasLivros() {
-    return livroRepository.findAll();
+  public List<LivroDto> obterTodasLivros() {
+    return  livroRepository.findAll().stream().map( l -> modelMapper.modelMapper().map(l, LivroDto.class)).collect(Collectors.toList());
   }
 
-  public Livro obterLivro(String nome) {
+  public LivroDto obterLivro(String nome) {
     Optional<Livro> optLivro = livroRepository.findByNome(nome);
     if(Objects.nonNull(optLivro)){
-      return optLivro.get();
+      return modelMapper.modelMapper().map(optLivro.get(), LivroDto.class);
     }
-    return new Livro();
+    return new LivroDto();
   }
 
   public String excluirLivro(String nome) {
-    Livro li = obterLivro(nome);
+    LivroDto li = obterLivro(nome);
     if(Objects.nonNull(li)){
-      livroRepository.delete(li);
+      livroRepository.delete(modelMapper.modelMapper().map(li,Livro.class));
       return "O livro foi excluido com Sucesso: "+nome;
     }
     return null;
   }
 
-  public Livro updateLivro(Livro livro, String nome) {
-    Livro li = obterLivro(nome);
+  public LivroDto updateLivro(LivroDto livro, String nome) {
+    LivroDto li = obterLivro(nome);
     if(Objects.nonNull(li)){
       livro.setId(li.getId());
-      livroRepository.save(livro);
-      return livro;
+      return salvaLivro(livro);
     }
     return null;
   }
 
-  public List<Livro> listaLivrosPorCategoria(String categoria) {
+  public List<LivroDto> listaLivrosPorCategoria(String categoria) {
     Optional<List<Livro>> optListLivro = livroRepository.findByCategoria(categoria);
     if(optListLivro.isPresent()){
-      return optListLivro.get();
+
+      List<Livro> l = optListLivro.get();
+      return l.stream().map(i -> modelMapper.modelMapper().map(l, LivroDto.class)).collect(Collectors.toList());      
     }
     return new ArrayList<>();
   }
   
-  public List<Livro> listaLivrosPorAutor(String nomeAutor) {
+  public List<LivroDto> listaLivrosPorAutor(String nomeAutor) {
     Optional<List<Livro>> optListLivro = livroRepository.findByAutor(nomeAutor);
     if(optListLivro.isPresent()){
-      return optListLivro.get();
+      List<Livro> l = optListLivro.get();
+      return l.stream().map(i -> modelMapper.modelMapper().map(l, LivroDto.class)).collect(Collectors.toList());      
     }
     return new ArrayList<>();
   }

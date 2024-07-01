@@ -9,7 +9,7 @@ import com.fuctura.biblioteca.models.Categoria;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria,Long>{
-
+ 
   Optional<Categoria> findByNome(String nome);
   
 }

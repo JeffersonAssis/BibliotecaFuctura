@@ -1,28 +1,17 @@
-package com.fuctura.biblioteca.models;
+package com.fuctura.biblioteca.Dtos;
 
+public class CategoriaDto {
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "tb_categoria")
-public class Categoria {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nome;
     
     private String descricao;
 
-    public Categoria() {
+    public CategoriaDto() {
     }
 
-    public Categoria(Long id, String nome, String descricao) {
+    public CategoriaDto(Long id, String nome, String descricao) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
