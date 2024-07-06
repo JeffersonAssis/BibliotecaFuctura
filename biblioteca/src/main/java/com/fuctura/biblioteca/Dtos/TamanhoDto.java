@@ -1,4 +1,4 @@
-package com.fuctura.biblioteca.Dtos;
+package com.fuctura.biblioteca.dtos;
 
 public enum TamanhoDto {
   PEQUENO(0),

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Objects;
 
-import com.fuctura.biblioteca.Dtos.CategoriaDto;
+import com.fuctura.biblioteca.dtos.CategoriaDto;
 import com.fuctura.biblioteca.service.CategoriaService;
 
 

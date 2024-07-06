@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fuctura.biblioteca.Dtos.LivroDto;
 import com.fuctura.biblioteca.config.ModelMapperConfig;
+import com.fuctura.biblioteca.dtos.LivroDto;
 import com.fuctura.biblioteca.models.Livro;
 import com.fuctura.biblioteca.repository.LivroRepository;
 
