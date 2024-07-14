@@ -1,17 +1,28 @@
 package com.fuctura.biblioteca.dtos;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 
 public class LivroDto {
 
 
   private Long id;
 
+  @NotBlank(message = "O campo Nome não pode ser Vazio!")
+  @NotNull(message = "O campo Nome não pode ser nulo!")
+  @Size(min = 2, message = "O valor minimo é dois caracteres!")
   private String nome;
-  
+  @NotBlank(message = "O campo Autor não pode ser Vazio!")
+  @NotNull(message = "O campo Autor não pode ser nulo!")
+  @Size(min = 3, message = "O valor minimo é três caracteres!")
   private String autor;
-  
+  @NotBlank(message = "O campo texto não pode ser vazio!")
+  @NotNull(message = "O campo texto não pode ser nulo!")
   private String texto;
 
+  @NotNull(message = "Informe o tamanho do livro!")
   private int tamanho;
   
 

@@ -13,11 +13,16 @@ import com.fuctura.biblioteca.models.Livro;
 @Repository
 public interface LivroRepository extends JpaRepository<Livro, Long> {
   
-  Optional<Livro> findByNome(String nome);
+  Optional<Livro> findByNomeContainingIgnoreCase(String nome);
 
-  Optional<List<Livro>> findByAutor(String nome);
+  List<Livro> findByAutorContainingIgnoreCase(String nome);
+
+  boolean existsByNomeIgnoreCase(String nome);
 
   @Query("SELECT l FROM Livro l JOIN l.categoria c WHERE c.nome = :categoria")
-  Optional<List<Livro>> findByCategoria(@Param("categoria")String categoria);
+  List<Livro> findByCategoria(@Param("categoria")String categoria);
+
+  List<Livro> findByCategoriaNomeContainingIgnoreCase(String nome);
+  
   
 } 
